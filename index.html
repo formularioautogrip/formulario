@@ -181,14 +181,17 @@
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<!-- jsPDF -->
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<!-- EmailJS -->
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script>
-  const { jsPDF } = window.jspdf;
-
   // Inicializar EmailJS
   (function () {
-    emailjs.init("TU_PUBLIC_KEY"); // 🛠️ Reemplaza esto
+    emailjs.init("TU_PUBLIC_KEY"); // 🔁 REEMPLAZA esto con tu PUBLIC KEY de EmailJS
   })();
 
+  const { jsPDF } = window.jspdf;
   const form = document.getElementById('vehicleForm');
   const canvas = document.getElementById('signaturePad');
   const ctx = canvas.getContext('2d');
@@ -196,7 +199,6 @@
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    // Obtener datos del formulario
     const nombre = document.getElementById('nombre').value;
     const telefono = document.getElementById('telefono').value;
     const correo = document.getElementById('correo').value;
@@ -229,7 +231,7 @@
     pdf.text(`Nombre del Cliente: ${nombre}`, 10, y);
     pdf.text(`Teléfono: ${telefono}`, 10, y + 6);
     pdf.text(`Correo Electrónico: ${correo}`, 10, y + 12);
-    y += 20;
+    y += 24;
 
     pdf.setFontSize(14);
     pdf.text('Razón de la Visita:', 10, y); y += 6;
@@ -261,7 +263,7 @@
     pdf.setFontSize(14);
     pdf.text('Firma de Recibido:', 10, y); y += 10;
 
-    // Agregar imagen de firma
+    // Agregar firma (canvas)
     const firmaDataURL = canvas.toDataURL('image/png');
     const imgProps = pdf.getImageProperties(firmaDataURL);
     const pdfWidth = 70;
@@ -273,15 +275,15 @@
     const dataUriString = await pdf.output('datauristring');
     const base64PDF = dataUriString.split(',')[1];
 
-    // Enviar con EmailJS
-    emailjs.send("TU_SERVICE_ID", "TU_TEMPLATE_ID", {
+    // Enviar PDF con EmailJS
+    emailjs.send("TU_SERVICE_ID", "autoGrip_formulario", {
       nombre: nombre,
       correo_cliente: correo,
-      pdfBase64: base64PDF
+      archivo_pdf: base64PDF
     }).then(() => {
       alert('✅ PDF enviado por correo al cliente y al taller.');
     }, (error) => {
-      console.error('Error:', error);
+      console.error('❌ Error al enviar el correo:', error);
       alert('❌ No se pudo enviar el correo.');
     });
   });
