@@ -179,5 +179,112 @@
     <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <!-- Script personalizado -->
     <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+  const { jsPDF } = window.jspdf;
+
+  // Inicializar EmailJS
+  (function () {
+    emailjs.init("TU_PUBLIC_KEY"); // 🛠️ Reemplaza esto
+  })();
+
+  const form = document.getElementById('vehicleForm');
+  const canvas = document.getElementById('signaturePad');
+  const ctx = canvas.getContext('2d');
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    // Obtener datos del formulario
+    const nombre = document.getElementById('nombre').value;
+    const telefono = document.getElementById('telefono').value;
+    const correo = document.getElementById('correo').value;
+    const razon = document.getElementById('razon').value;
+    const reparacion = document.getElementById('reparacion').value;
+    const notas = document.getElementById('notas').value;
+
+    const estado = {
+      parabrisas: document.getElementById('parabrisas').value,
+      ventanas: document.getElementById('ventanas').value,
+      pintura: document.getElementById('pintura').value,
+      bumper_tracero: document.getElementById('bumper_tracero').value,
+      bumper_delantero: document.getElementById('bumper_delantero').value,
+      tapa_motor: document.getElementById('tapa_motor').value,
+      cajuela: document.getElementById('cajuela').value,
+      asientos: document.getElementById('asientos').value,
+      dash: document.getElementById('dash').value,
+      llantas: document.getElementById('llantas').value,
+    };
+
+    // Crear PDF
+    const pdf = new jsPDF();
+    let y = 10;
+
+    pdf.setFontSize(16);
+    pdf.text('AutoGrip - Control de Vehículos', 105, y, null, null, 'center');
+    y += 10;
+
+    pdf.setFontSize(12);
+    pdf.text(`Nombre del Cliente: ${nombre}`, 10, y);
+    pdf.text(`Teléfono: ${telefono}`, 10, y + 6);
+    pdf.text(`Correo Electrónico: ${correo}`, 10, y + 12);
+    y += 20;
+
+    pdf.setFontSize(14);
+    pdf.text('Razón de la Visita:', 10, y); y += 6;
+    pdf.setFontSize(12);
+    pdf.text(razon, 12, y, { maxWidth: 180 });
+    y += 20;
+
+    pdf.setFontSize(14);
+    pdf.text('Reparaciones Solicitadas:', 10, y); y += 6;
+    pdf.setFontSize(12);
+    pdf.text(reparacion, 12, y, { maxWidth: 180 });
+    y += 20;
+
+    pdf.setFontSize(14);
+    pdf.text('Estado del Vehículo:', 10, y); y += 6;
+    for (const [key, value] of Object.entries(estado)) {
+      pdf.setFontSize(12);
+      pdf.text(`${key.replace('_', ' ')}: ${value}`, 12, y);
+      y += 6;
+    }
+
+    y += 10;
+    pdf.setFontSize(14);
+    pdf.text('Notas:', 10, y); y += 6;
+    pdf.setFontSize(12);
+    pdf.text(notas, 12, y, { maxWidth: 180 });
+    y += 20;
+
+    pdf.setFontSize(14);
+    pdf.text('Firma de Recibido:', 10, y); y += 10;
+
+    // Agregar imagen de firma
+    const firmaDataURL = canvas.toDataURL('image/png');
+    const imgProps = pdf.getImageProperties(firmaDataURL);
+    const pdfWidth = 70;
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    pdf.addImage(firmaDataURL, 'PNG', 10, y, pdfWidth, pdfHeight);
+    y += pdfHeight + 10;
+
+    // Convertir PDF a base64
+    const dataUriString = await pdf.output('datauristring');
+    const base64PDF = dataUriString.split(',')[1];
+
+    // Enviar con EmailJS
+    emailjs.send("TU_SERVICE_ID", "TU_TEMPLATE_ID", {
+      nombre: nombre,
+      correo_cliente: correo,
+      pdfBase64: base64PDF
+    }).then(() => {
+      alert('✅ PDF enviado por correo al cliente y al taller.');
+    }, (error) => {
+      console.error('Error:', error);
+      alert('❌ No se pudo enviar el correo.');
+    });
+  });
+</script>
   </body>
 </html>
