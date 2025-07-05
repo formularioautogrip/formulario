@@ -9,8 +9,8 @@ $correo_cliente = $data['correo_cliente'] ?? '';
 $pdfBase64 = $data['pdfBase64'] ?? '';
 
 if (!$correo_cliente || !$pdfBase64) {
-    echo json_encode(['success' => false, 'message' => 'Datos incompletos']);
-    exit;
+  echo json_encode(['success' => false, 'message' => 'Datos incompletos']);
+  exit;
 }
 
 $decodedPDF = base64_decode($pdfBase64);
@@ -40,8 +40,8 @@ $sent = mail($to, $subject, $message, $headers);
 unlink($tempPDFPath);
 
 if ($sent) {
-    echo json_encode(['success' => true]);
+  echo json_encode(['success' => true]);
 } else {
-    echo json_encode(['success' => false, 'message' => 'Error al enviar el correo.']);
+  echo json_encode(['success' => false, 'message' => 'Error al enviar el correo.']);
 }
 ?>
