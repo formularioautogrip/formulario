@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AutoGrip - Control de Vehículos</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>AutoGrip - Control de Vehículos</h1>
+      <form id="vehicleForm">
+        <h2>Información del Cliente</h2>
+        <label>Nombre del Cliente</label>
+        <input type="text" id="nombre" required />
+
+        <label>Teléfono</label>
+        <input type="tel" id="telefono" required />
+
+        <label>Correo Electrónico</label>
+        <input type="email" id="correo" required />
+
+        <h2>Razón de la Visita</h2>
+        <textarea
+          id="razon"
+          rows="3"
+          placeholder="¿Por qué trae el carro?"
+        ></textarea>
+
+        <h2>Reparaciones Solicitadas</h2>
+        <textarea
+          id="reparacion"
+          rows="3"
+          placeholder="¿Qué quiere que se le repare?"
+        ></textarea>
+
+        <h2>Estado del Vehículo</h2>
+        <div class="question">
+          <label>Estado del parabrisas</label>
+          <select id="parabrisas" required>
+            <option value="">Seleccione</option>
+            <option>Bueno</option>
+            <option>Necesita reparación</option>
+            <option>Reemplazo</option>
+          </select>
+        </div>
+        <div class="question">
+          <label>Estado de las ventanas</label>
+          <select id="ventanas" required>
+            <option value="">Seleccione</option>
+            <option>Bueno</option>
+            <option>Necesita reparación</option>
+            <option>Reemplazo</option>
+          </select>
+        </div>
+        <div class="question">
+          <label>Pintura de puertas</label>
+          <select id="pintura" required>
+            <option value="">Seleccione</option>
+            <option>Bueno</option>
+            <option>Necesita reparación</option>
+            <option>Reparación mayor</option>
+          </select>
+        </div>
+        <div class="question">
+          <label>Bumper trasero</label>
+          <select id="bumper_tracero" required>
+            <option value="">Seleccione</option>
+            <option>Bueno</option>
+            <option>Necesita reparación</option>
+            <option>Reemplazo</option>
+          </select>
+        </div>
+        <div class="question">
+          <label>Bumper delantero</label>
+          <select id="bumper_delantero" required>
+            <option value="">Seleccione</option>
+            <option>Bueno</option>
+            <option>Necesita reparación</option>
+            <option>Reemplazo</option>
+          </select>
+        </div>
+        <div class="question">
+          <label>Tapa del motor</label>
+          <select id="tapa_motor" required>
+            <option value="">Seleccione</option>
+            <option>Bueno</option>
+            <option>Necesita reparación</option>
+            <option>Reemplazo</option>
+          </select>
+        </div>
+        <div class="question">
+          <label>Cajuela</label>
+          <select id="cajuela" required>
+            <option value="">Seleccione</option>
+            <option>Bueno</option>
+            <option>Necesita reparación</option>
+            <option>Reemplazo</option>
+          </select>
+        </div>
+        <div class="question">
+          <label>Asientos</label>
+          <select id="asientos" required>
+            <option value="">Seleccione</option>
+            <option>Bueno</option>
+            <option>Necesita reparación</option>
+            <option>Reemplazo</option>
+          </select>
+        </div>
+        <div class="question">
+          <label>Dashboard</label>
+          <select id="dash" required>
+            <option value="">Seleccione</option>
+            <option>Bueno</option>
+            <option>Necesita reparación</option>
+            <option>Reemplazo</option>
+          </select>
+        </div>
+        <div class="question">
+          <label>llantas</label>
+          <select id="llantas" required>
+            <option value="">Seleccione</option>
+            <option>Buen estado</option>
+            <option>Necesita reparación</option>
+            <option>Reemplazo</option>
+          </select>
+        </div>
+
+        <h2>Notas</h2>
+        <textarea
+          id="notas"
+          rows="3"
+          placeholder="Notas adicionales..."
+        ></textarea>
+
+        <h2>Firma de Recibido</h2>
+        <div class="signature-box" id="signature-box">
+          <canvas id="signaturePad"></canvas>
+        </div>
+        <button type="button" id="clearSignature">Borrar Firma</button>
+
+        <div class="buttons">
+          <button type="submit">Generar Documento</button>
+        </div>
+      </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
